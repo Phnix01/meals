@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart'; // Assure-toi que url_launcher est bien importé
+import 'package:url_launcher/url_launcher_string.dart'; // Pour utiliser launchUrlString
 
 class Profil extends StatefulWidget {
   const Profil({super.key});
@@ -14,11 +15,10 @@ class _ProfilState extends State<Profil> {
   // Fonction pour ouvrir WhatsApp
   Future<void> _openWhatsApp() async {
     const whatsappUrl =
-        'https://wa.me/<+22796744627>'; // Remplace par ton numéro WhatsApp
-    // ignore: deprecated_member_use
-    if (await canLaunch(whatsappUrl)) {
-      // ignore: deprecated_member_use
-      await launch(whatsappUrl);
+        'https://wa.me/+22796744627'; // Remplace par ton numéro WhatsApp
+
+    if (await canLaunchUrlString(whatsappUrl)) {
+      await launchUrlString(whatsappUrl, mode: LaunchMode.externalApplication);
     } else {
       throw 'Impossible d\'ouvrir WhatsApp';
     }
@@ -27,11 +27,10 @@ class _ProfilState extends State<Profil> {
   // Fonction pour ouvrir LinkedIn
   Future<void> _openLinkedIn() async {
     const linkedInUrl =
-        'https://www.linkedin.com/in/omar-farouk-sani-gigo-85b8a9183?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app'; // Remplace par ton identifiant LinkedIn
-    // ignore: deprecated_member_use
-    if (await canLaunch(linkedInUrl)) {
-      // ignore: deprecated_member_use
-      await launch(linkedInUrl);
+        'https://www.linkedin.com/in/omar-farouk-sani-gigo-85b8a9183?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app';
+
+    if (await canLaunchUrlString(linkedInUrl)) {
+      await launchUrlString(linkedInUrl, mode: LaunchMode.externalApplication);
     } else {
       throw 'Impossible d\'ouvrir LinkedIn';
     }
@@ -46,7 +45,7 @@ class _ProfilState extends State<Profil> {
         gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.primaryContainer,
-            Colors.black87
+            Colors.black87,
           ],
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
@@ -60,14 +59,25 @@ class _ProfilState extends State<Profil> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Image de profil
                 CircleAvatar(
                   radius: size.width * 0.3,
                   backgroundImage: AssetImage('assets/images/img.jpg'),
+                  backgroundColor: Colors.transparent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
-
-                // Titre et rôle
                 Text(
                   'Software Engineer & AlphaSoft CEO',
                   textAlign: TextAlign.center,
@@ -78,8 +88,6 @@ class _ProfilState extends State<Profil> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Description
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.black38.withOpacity(0.3),
@@ -88,7 +96,7 @@ class _ProfilState extends State<Profil> {
                   ),
                   padding: const EdgeInsets.all(18.0),
                   child: Text(
-                    'Entrepreneur et développeur web/mobile. \nAyant participé à l\'élaboration de plusieurs projets de grande envergure.',
+                    'Entrepreneur et développeur web/mobile.\nAyant participé à l\'élaboration de plusieurs projets de grande envergure.',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.nerkoOne(
                       color: Colors.white.withOpacity(0.9),
@@ -97,22 +105,18 @@ class _ProfilState extends State<Profil> {
                   ),
                 ),
                 const SizedBox(height: 40),
-
-                // Boutons de réseaux sociaux
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SocialButton(
                       icon: FontAwesomeIcons.whatsapp,
                       text: 'WhatsApp',
-                      onPressed:
-                          _openWhatsApp, // Appel à la fonction pour WhatsApp
+                      onPressed: _openWhatsApp,
                     ),
                     SocialButton(
                       icon: FontAwesomeIcons.linkedin,
                       text: 'LinkedIn',
-                      onPressed:
-                          _openLinkedIn, // Appel à la fonction pour LinkedIn
+                      onPressed: _openLinkedIn,
                     ),
                   ],
                 ),
@@ -125,7 +129,6 @@ class _ProfilState extends State<Profil> {
   }
 }
 
-// Widget personnalisé pour les boutons des réseaux sociaux
 class SocialButton extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -155,7 +158,6 @@ class SocialButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
         ),
         elevation: 10,
-        shadowColor: Colors.black.withOpacity(0.5),
       ),
     );
   }
