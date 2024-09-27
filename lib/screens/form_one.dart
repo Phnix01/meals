@@ -75,10 +75,17 @@ class _FormOneState extends State<FormOne> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
-                Icon(
-                  Icons.verified_user_rounded,
-                  color: Colors.white70,
-                  size: 100,
+                // Icon(
+                //   Icons.verified_user_rounded,
+                //   color: Colors.white70,
+                //   size: 100,
+                // )
+                Container(
+                  child: Image.asset(
+                    'assets/images/food.png',
+                  ),
+                  width: 230,
+                  height: 160,
                 ),
                 const SizedBox(height: 30),
                 Container(
